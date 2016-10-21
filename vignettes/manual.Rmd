@@ -3,7 +3,8 @@ title: "`r paste('Manual statcheck', packageVersion('statcheck'))`"
 author: "Michèle Nuijten (m.b.nuijten@uvt.nl)"
 date: "`r Sys.Date()`"
 output:
-  rmarkdown::html_vignette: null
+  rmarkdown::html_vignette: 
+    toc: yes
   html_document:
     number_sections: yes
     theme: flatly
@@ -612,11 +613,22 @@ zero, so it makes no sense to report it as such.
 If you find these criteria too stringent, you can set `pZeroError` to `FALSE`.
 
 #### OneTailedTxt
-The argument `OneTailedTxt` controls whether statcheck will try to identify and correct for one-tailed tests. This is one of the most important arguments in statcheck. Our validity study showed that statcheck's accuracy improved when `OneTailedTxt=TRUE` (Nuijten et al., in press).
 
-By default, `OneTailedTxt=FALSE` and statcheck will treat all tests it finds the same, depending on your settings for `OneTailedTests`. However, you can tell statcheck to actively look for tests that might be one-tailed by setting `OneTailedTxt=TRUE`.
+The argument `OneTailedTxt` controls whether statcheck will try to identify and
+correct for one-tailed tests. This is one of the most important arguments in
+statcheck. Our validity study showed that statcheck's accuracy improved when
+`OneTailedTxt=TRUE` (Nuijten et al., in press).
 
-When `OneTailedTxt=TRUE`, statcheck will search the entire text for the keywords "one-tailed", "one-sided", and "directional" (taking spacing issues etc. into account). When statcheck finds at least one of those keywords AND an initially inconsistent result would be consistent if it was a one-tailed test, then statcheck treats this case as a one-tailed test and counts it as consistent.
+By default, `OneTailedTxt=FALSE` and statcheck will treat all tests it finds the
+same, depending on your settings for `OneTailedTests`. However, you can tell
+statcheck to actively look for tests that might be one-tailed by setting
+`OneTailedTxt=TRUE`.
+
+When `OneTailedTxt=TRUE`, statcheck will search the entire text for the keywords
+"one-tailed", "one-sided", and "directional" (taking spacing issues etc. into
+account). When statcheck finds at least one of those keywords AND an initially
+inconsistent result would be consistent if it was a one-tailed test, then
+statcheck treats this case as a one-tailed test and counts it as consistent.
 
 ```{r OneTailedTxt, echo = TRUE, eval = TRUE, message = FALSE}
 txt <- "... t(48) = 1.82, p < .05, all tests were one-tailed."
@@ -628,34 +640,53 @@ statcheck(txt)
 statcheck(txt, OneTailedTxt=TRUE)
 ```
 
-Note that in the first, default scenario the result is treated both as an `Error` and a `DecisionError`. However, if `OneTailedTxt` is set to `TRUE`, statcheck recognizes this test a one-tailed test and doesn't flag it as an inconsistency. Note, however, that the computed p-value in the output still corresponds to a two-tailed test.
+Note that in the first, default scenario the result is treated both as an
+`Error` and a `DecisionError`. However, if `OneTailedTxt` is set to `TRUE`,
+statcheck recognizes this test a one-tailed test and doesn't flag it as an
+inconsistency. Note, however, that the computed p-value in the output still
+corresponds to a two-tailed test.
 
 #### AllPValues
-By default, statcheck searches for fully reported NHST results (test statistic, degrees of freedom if necessary, and a p-value). However, if you set the argument `AllPValues` to `TRUE`, statcheck will only search for p-values:
+
+By default, statcheck searches for fully reported NHST results (test statistic,
+degrees of freedom if necessary, and a p-value). However, if you set the
+argument `AllPValues` to `TRUE`, statcheck will only search for p-values:
 
 ```{r AllPValues, eval = TRUE, echo = TRUE, message = FALSE}
-txt <- "We found a significant difference between groups, F(3, 147) = 3.45, p = .02. Group 1 had a higher mean than group 2, t(48) = 1.56, p<.05, but did not differ from group 3, t(48) = .34, p = .74. We found no difference between men and women, t(148) = .73, p = .763."
-statcheck(txt, AllPValues=TRUE)
+txt <- "We found a significant difference between groups, F(3, 147) = 3.45, 
+        p = .02. Group 1 had a higher mean than group 2, t(48) = 1.56, p<.05, 
+        but did not differ from group 3, t(48) = .34, p = .74. We found no 
+        difference between men and women, t(148) = .73, p = .763."
+statcheck(txt, AllPValues = TRUE)
 ```
 
-This option merely allows you to extract the p-values, it doesn't extract enough information to recalculate anything.
+This option merely allows you to extract the p-values, it doesn't extract enough
+information to recalculate anything.
 
 ### Plot statcheck results
 
-To get a rough overview of the inconsistencies in a paper, you can use statcheck's plot function:
+To get a rough overview of the inconsistencies in a paper, you can use
+statcheck's `plot` function:
 
 ```{r plot, eval = TRUE, echo = TRUE, message = FALSE}
-txt <- "We found a significant difference between groups, F(3, 147) = 3.45, p = .02. Group 1 had a higher mean than group 2, t(48) = 1.56, p<.05, but did not differ from group 3, t(48) = .34, p = .74. We found no difference between men and women, t(148) = .73, p = .763."
+txt <- "We found a significant difference between groups, F(3, 147) = 3.45, 
+        p = .02. Group 1 had a higher mean than group 2, t(48) = 1.56, p<.05, 
+        but did not differ from group 3, t(48) = .34, p = .74. We found no 
+        difference between men and women, t(148) = .73, p = .763."
 stat <- statcheck(txt)
-
 stat
-
 plot(stat)
 ```
 
-The plot shows the reported p-values (x-axis) against the computed p-values (y-axis). Exactly reported p-values (e.g., p = .74) should lie on the diagonal. The dotted lines indicate the region of significance ($\alpha$ = .05 by default). The colors of the dots indicate whether this particular p-value was an inconsistency or even a decision error. 
+The plot shows the reported p-values (x-axis) against the computed p-values
+(y-axis). Exactly reported p-values (e.g., p = .74) should lie on the diagonal.
+The dotted lines indicate the region of significance ($\alpha$ = .05 by
+default). The colors of the dots indicate whether this particular p-value was an
+inconsistency or even a decision error.
 
-By default, the plot is created with ggplot2 in APA style. Many thanks to [John Sakaluk](http://johnsakaluk.com/) for writing the APA style plot function. It is also possible to plot the statcheck results without using ggplot2:
+By default, the plot is created with ggplot2 in APA style. Many thanks to [John
+Sakaluk](http://johnsakaluk.com/) for writing the APA style plot function. It is
+also possible to plot the statcheck results without using ggplot2:
 
 ```{r plot_nonapa, eval = TRUE, echo = TRUE, message = FALSE}
 plot(stat, APA=FALSE)
@@ -667,18 +698,27 @@ When `APA=FALSE`, it is possible to modify the plot's graphical parameters:
 plot(stat, APA=FALSE, cex=2, axes=FALSE)
 ```
 
-The non-APA layout is also the layout that statcheck uses in the `identify` function that is explained in the next section.
+The non-APA layout is also the layout that statcheck uses in the `identify`
+function that is explained in the next section.
 
 ### Identify points in plot
 
-If you plotted many statcheck results and there is one point that stands out in the graph, but it's hard to find in the statcheck output, the `identify` function might be useful.
+If you plotted many statcheck results and there is one point that stands out in
+the graph, but it's hard to find in the statcheck output, the `identify`
+function might be useful.
 
-`identify` allows you to click on points in the plot to literally identify them in the data frame with statcheck results. Note: this function is only available if you run statcheck in RStudio.
+`identify` allows you to click on points in the plot to literally identify them
+in the data frame with statcheck results. Note: this function is only available
+if you run statcheck in RStudio.
 
-For instance, if we go back to the example in the section above, we might be interested in the two p-values that were flagged as inconsistencies.
+For instance, if we go back to the example in the section above, we might be
+interested in the two p-values that were flagged as inconsistencies.
 
 ```{r identify, eval = FALSE, echo = TRUE, message = FALSE}
-txt <- "We found a significant difference between groups, F(3, 147) = 3.45, p = .02. Group 1 had a higher mean than group 2, t(48) = 1.56, p<.05, but did not differ from group 3, t(48) = .34, p = .74. We found no difference between men and women, t(148) = .73, p = .763."
+txt <- "We found a significant difference between groups, F(3, 147) = 3.45, 
+        p = .02. Group 1 had a higher mean than group 2, t(48) = 1.56, p<.05, 
+        but did not differ from group 3, t(48) = .34, p = .74. We found no 
+        difference between men and women, t(148) = .73, p = .763."
 stat <- statcheck(txt)
 
 identify(stat)
@@ -688,17 +728,25 @@ If you run this code, you will see the non-APA plot:
 
 <!-- <img src="statcheckIdentify_screenshot1.png" align="middle" height="400" width="664" margin="0 auto" /> -->
 
-In the plot you can see two things: firstly, there is a cross next to one of the points. This is a cursor/locator with which you can click on the points in the plot that you are interested in. The second thing you see, is that in the top left corner of the plot it says "Locator active (Esc to finish)". This means that when you're finished clicking the points you're interested in, press Esc to exit the plot. When you do, the points you clicked in the plot will be numbered and statcheck will give you the results of these points in a data frame:
+In the plot you can see two things: firstly, there is a cross next to one of the
+points. This is a cursor/locator with which you can click on the points in the
+plot that you are interested in. The second thing you see, is that in the top
+left corner of the plot it says "Locator active (Esc to finish)". This means
+that when you're finished clicking the points you're interested in, press Esc to
+exit the plot. When you do, the points you clicked in the plot will be numbered
+and statcheck will give you the results of these points in a data frame:
 
 <!-- <img src="statcheckIdentify_screenshot2.png" align="middle" height="400" width="664" margin="0 auto" /> -->
 
 <!-- <img src="statcheckIdentify_screenshot3.png" align="middle" height="400" width="664" margin="0 auto" /> -->
 
-As you can see in the data frame and the plot, the 2nd and 4th row from the output are selected with the identify function for further inspection.
+As you can see in the data frame and the plot, the 2nd and 4th row from the
+output are selected with the identify function for further inspection.
 
 ### Summarize statcheck results
 
-The function `summary` uses the full statcheck data frame to calculate summarized results.
+The function `summary` uses the full statcheck data frame to calculate
+summarized results.
 
 ```{r summary, eval = TRUE, echo = TRUE, message = FALSE}
 txt1 <- "We ran a manipulation check which showed that the stimulus achieved the desired effect, Z = 1.99, p < .05"
@@ -708,48 +756,57 @@ stat <- statcheck(c(txt1,txt2))
 
 summary(stat)
 ```
-The output shows that there were two sources with statistics scanned. The summary indicates how many results were extracted per source (`pValues`), how many of those were an `Error` or `DecisionError`.
+
+The output shows that there were two sources with statistics scanned. The
+summary indicates how many results were extracted per source (`pValues`), how
+many of those were an `Error` or `DecisionError`.
 
 ## Common Errors
 
-There are several errors that can arise when installing or running statcheck. I'm currently logging the errors I encounter with their solutions. This list is far from complete, so if you have an error you can't solve, or come across something that you think could be a bug, please contact me at m.b.nuijten@uvt.nl.
+There are several errors that can arise when installing or running statcheck.
+I'm currently logging the errors I encounter with their solutions. This list is
+far from complete, so if you have an error you can't solve, or come across
+something that you think could be a bug, please contact me at
+m.b.nuijten@uvt.nl.
 
 ### Rcpp
 
-While installing statcheck, you can come across the Error that the package Rcpp is not available:
+While installing statcheck, you can come across the Error that the package Rcpp
+is not available:
 
 ```{r error_Rcpp, eval = FALSE, echo = TRUE}
-> devtools::install_github("MicheleNuijten/statcheck")
-Downloading GitHub repo MicheleNuijten/statcheck@master
-from URL https://api.github.com/repos/MicheleNuijten/statcheck/zipball/master
-Installing statcheck
-Installing 1 package: Rcpp
-trying URL 'http://cran.r-project.org/bin/windows/contrib/3.2/Rcpp_0.12.6.zip'
-Content type 'application/zip' length 3221864 bytes (3.1 MB)
-downloaded 3.1 MB
-
-package 'Rcpp' successfully unpacked and MD5 sums checked
-Warning: cannot remove prior installation of package 'Rcpp'
-
-The downloaded binary packages are in
-	C:\Users\Mnuijten\AppData\Local\Temp\RtmpgfVUqR\downloaded_packages
-"D:/R-3.2.3/bin/x64/R" --no-site-file --no-environ --no-save --no-restore --quiet CMD  \
-  INSTALL  \
-  "C:/Users/Mnuijten/AppData/Local/Temp/RtmpgfVUqR/devtools1ce82b75e49/MicheleNuijten-statcheck-d20d222"  \
-  --library="D:/R-3.2.3/library" --install-tests 
-
-* installing *source* package 'statcheck' ...
-** R
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called 'Rcpp'
-ERROR: lazy loading failed for package 'statcheck'
-* removing 'D:/R-3.2.3/library/statcheck'
-* restoring previous 'D:/R-3.2.3/library/statcheck'
-Error: Command failed (1)
+devtools::install_github("MicheleNuijten/statcheck")
+#> Downloading GitHub repo MicheleNuijten/statcheck@master
+#> from URL https://api.github.com/repos/MicheleNuijten/statcheck/zipball/master
+#> Installing statcheck
+#> Installing 1 package: Rcpp
+#> trying URL 'http://cran.r-project.org/bin/windows/contrib/3.2/Rcpp_0.12.6.zip'
+#> Content type 'application/zip' length 3221864 bytes (3.1 MB)
+#> downloaded 3.1 MB
+#> 
+#> package 'Rcpp' successfully unpacked and MD5 sums checked
+#> Warning: cannot remove prior installation of package 'Rcpp'
+#> 
+#> The downloaded binary packages are in
+#> 	C:\Users\Mnuijten\AppData\Local\Temp\RtmpgfVUqR\downloaded_packages
+#> "D:/R-3.2.3/bin/x64/R" --no-site-file --no-environ --no-save --no-restore --quiet CMD  \
+#>   INSTALL  \
+#>   "C:/Users/Mnuijten/AppData/Local/Temp/RtmpgfVUqR/devtools1ce82b75e49/MicheleNuijten-statcheck-d20d222"  \
+#>   --library="D:/R-3.2.3/library" --install-tests 
+#> 
+#> * installing *source* package 'statcheck' ...
+#> ** R
+#> ** byte-compile and prepare package for lazy loading
+#> Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+#>   there is no package called 'Rcpp'
+#> ERROR: lazy loading failed for package 'statcheck'
+#> * removing 'D:/R-3.2.3/library/statcheck'
+#> * restoring previous 'D:/R-3.2.3/library/statcheck'
+#> Error: Command failed (1)
 ```
 
-Here the solution is quite straightforward. Just re-install the package Rcpp manually:
+Here the solution is quite straightforward. Just re-install the package Rcpp
+manually:
 
 ```{r solution_Rcpp, eval = FALSE, echo = TRUE}
 install.packages("Rcpp")
@@ -757,36 +814,45 @@ install.packages("Rcpp")
 
 ### Xcode license on Mac
 
-When installing statcheck on Mac, you need to install Xcode. If your license is expired, you can get the following Warning:
+When installing statcheck on Mac, you need to install Xcode. If your license is
+expired, you can get the following warning:
 
 ```{r error_Xpdflicense, eval = FALSE, echo = TRUE}
-> devtools::install_github("MicheleNuijten/statcheck")
-Downloading github repo MicheleNuijten/statcheck@master
-Installing statcheck
-'/Library/Frameworks/R.framework/Resources/bin/R' --vanilla CMD INSTALL  \
-  '/private/var/folders/bh/r4jqk1zj4kzfyd8g9x7bdysc0000gn/T/RtmpW6A5Dc/devtools416756816ec1/MicheleNuijten-statcheck-d20d222'  \
-  --library='/Library/Frameworks/R.framework/Versions/3.1/Resources/library'  \
-  --install-tests 
-
-* installing *source* package ‘statcheck’ ...
-** R
-** byte-compile and prepare package for lazy loading
-
-
-Agreeing to the Xcode/iOS license requires admin privileges, please re-run as root via sudo.
-
-
-Warning: running command ''otool' -L '/Library/Frameworks/R.framework/Resources/library/tcltk/libs//tcltk.so'' had status 69
+devtools::install_github("MicheleNuijten/statcheck")
+#> Downloading github repo MicheleNuijten/statcheck@master
+#> Installing statcheck
+#> '/Library/Frameworks/R.framework/Resources/bin/R' --vanilla CMD INSTALL  \
+#>   '/private/var/folders/bh/r4jqk1zj4kzfyd8g9x7bdysc0000gn/T/RtmpW6A5Dc/devtools416756816ec1/MicheleNuijten-statcheck-d20d222'  \
+#>   --library='/Library/Frameworks/R.framework/Versions/3.1/Resources/library'  \
+#>   --install-tests 
+#> 
+#> * installing *source* package ‘statcheck’ ...
+#> ** R
+#> ** byte-compile and prepare package for lazy loading
+#> 
+#> 
+#> Agreeing to the Xcode/iOS license requires admin privileges, please re-run as root via sudo.
+#> 
+#> 
+#> Warning: running command ''otool' -L '/Library/Frameworks/R.framework/Resources/library/tcltk/libs//tcltk.so'' had status 69
 ```
 
-The solution can be found here: http://stackoverflow.com/questions/26197347/agreeing-to-the-xcode-ios-license-requires-admin-privileges-please-re-run-as-r and entails simply entering the following code on the command line:
+The solution can be found here:
+http://stackoverflow.com/questions/26197347/agreeing-to-the-xcode-ios-license-requires-admin-privileges-please-re-run-as-r
+and entails simply entering the following code on the command line:
 
-```{r solution_Xpdflicense, eval = FALSE, echo = TRUE}
+```{bash solution_Xpdflicense, eval = FALSE, echo = TRUE}
 sudo xcodebuild -license
 ```
 
 ## References
 
-Epskamp, S. & Nuijten, M. B.  (2016). statcheck: Extract statistics from articles and recompute p values. Retrieved from http://CRAN.R-project.org/package=statcheck. (R package version 1.2.1)
+Epskamp, S. & Nuijten, M. B.  (2016). statcheck: Extract statistics from
+articles and recompute p values. Retrieved from
+http://CRAN.R-project.org/package=statcheck. (R package version `r packageVersion("statcheck")`)
 
-Nuijten, M. B., Hartgerink, C. H. J., van Assen, M. A. L. M., Epskamp, S., & Wicherts, J. M. (in press). The prevalence of statistical reporting errors in psychology (1985-2013). *Behavior Research Methods*. DOI: 10.3758/s13428-015-0664-2 [PDF](https://mbnuijten.files.wordpress.com/2013/01/nuijtenetal_2015_reportingerrorspsychology1.pdf)
+Nuijten, M. B., Hartgerink, C. H. J., van Assen, M. A. L. M., Epskamp, S., &
+Wicherts, J. M. (in press). The prevalence of statistical reporting errors in
+psychology (1985-2013). *Behavior Research Methods*. DOI:
+10.3758/s13428-015-0664-2
+[PDF](https://mbnuijten.files.wordpress.com/2013/01/nuijtenetal_2015_reportingerrorspsychology1.pdf)
