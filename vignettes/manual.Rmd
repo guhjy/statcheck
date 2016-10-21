@@ -27,9 +27,7 @@ knitr::opts_chunk$set(
   comment = "#>", 
   collapse = TRUE,
   fig.width = 6)
-```
 
-```{r library, include = FALSE, message = FALSE}
 library(statcheck)
 ```
 
@@ -214,7 +212,7 @@ Thanks to [Eiko Fried](http://eiko-fried.com/) for figuring this out for me!
 After you installed Xpdf, you can load the R package statcheck with the
 following lines of code:
 
-```{r CRAN, echo = TRUE, eval = FALSE}
+```{r CRAN, eval = FALSE}
 install.packages("statcheck")
 library("statcheck")
 ```
@@ -228,7 +226,7 @@ not always the latest version. Instead of downloading statcheck from CRAN, you
 can also download the latest version of statcheck directly from GitHub with the
 following lines of R code:
 
-```{r github, echo = TRUE, eval = FALSE}
+```{r github, eval = FALSE}
 devtools::install_github("MicheleNuijten/statcheck")
 library("statcheck")
 ```
@@ -245,7 +243,8 @@ of text, recalculate the p-value, and report back the findings. In the example
 below I simply feed statcheck a string of text with some statistics in it, and
 it gives me back a table with the results. I'll go over the results below.
 
-```{r basic_ex1, echo = TRUE, eval = TRUE, message = FALSE}
+```{r basic_ex1, message = FALSE}
+library(statcheck)
 txt <- "blablabla the effect was very significant (t(48) = 1.02, p < .05)"
 statcheck(txt)
 ```
@@ -254,7 +253,7 @@ Note that when you want to scan a Z test, you need to place a space in front of
 Z. This is because of an ugly hack I had to build in: sometimes Z tests were
 read as $\chi^2$ and this was the easiest way to avoid that:
 
-```{r space_before_stats, echo = TRUE, eval = FALSE}
+```{r space_before_stats, eval = FALSE}
 statcheck("z = 1.95, p = .05")
 
 # instead, type
