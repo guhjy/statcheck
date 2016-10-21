@@ -12,4 +12,7 @@ Description: Extract statistics from articles and recompute p values.
 License: GPL-2
 LazyLoad: yes
 ByteCompile: yes
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
