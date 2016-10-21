@@ -464,12 +464,9 @@ value. The arguments control aspects such as: the assumed alpha level, how
 one-tailed tests are treated, and which types of statistics should be checked.
 These are all statcheck's arguments with their default values:
 
-```{r arguments_statcheck, echo = TRUE, eval = FALSE}
-statcheck(x, stat = c("t", "F", "cor", "chisq", "Z"), 
-
-    OneTailedTests = FALSE, alpha = 0.05, pEqualAlphaSig = TRUE, 
-
-    OneTailedTxt = FALSE, AllPValues = FALSE)
+```{r arguments_statcheck, echo = FALSE, eval = TRUE, comment = ""}
+call_example <- capture.output(str(args(statcheck), width = 60))
+cat(paste(sub("function ", "statcheck", call_example), collapse = "\n"))
 ```
 
 All these arguments can also be specified in the functions to check entire articles or folders of articles. E.g., when using 'checkPDF', you can also specify specific arguments as follows:
