@@ -301,23 +301,23 @@ The second part of the output, as shown below, shows the result of the consisten
 stat[,9:12]
 ```
 
-The column 'Computed' shows the computed p-value that statcheck calculated based
+The column `Computed` shows the computed p-value that statcheck calculated based
 on the reported test statistic and degrees of freedom. It depends on the
-argument 'OneTailedTests' whether this is a two-sided (default;
-'OneTailedTests=FALSE') or one-sided p-value ('OneTailedTests=FALSE').
+argument `OneTailedTests` whether this is a two-sided (default;
+`OneTailedTests=FALSE`) or one-sided p-value (`OneTailedTests=FALSE`).
 
-In the column 'Raw' you find the complete result as extracted by statcheck. This
+In the column `Raw` you find the complete result as extracted by statcheck. This
 is the concatenated version of the information in the previous columns.
 
-The columns 'Error' and 'DecisionError' show the final results of the
-consistency check. In this example, 'Error' is 'TRUE', which means that the
+The columns `Error` and `DecisionError` show the final results of the
+consistency check. In this example, `Error` is `TRUE`, which means that the
 reported p-value is inconsistent with the reported test statistic and degrees of
 freedom. You can also see this in the output, where the reported p-value is "<
 .05", whereas the computed p-value is .0557. This also means that
-'DecisionError' is also 'TRUE', which indicates not only that the reported
+`DecisionError` is also `TRUE`, which indicates not only that the reported
 p-value is inconsistent, but it also changes the statistical conclusion: the
 reported p-value is significant, whereas the recomputed one is not.Note that a
-result can only be a 'DecisionError' when it is also an 'Error'.
+result can only be a `DecisionError` when it is also an `Error`.
 
 #### statcheck output: part 3
 
@@ -328,17 +328,17 @@ result and the article it was extracted from.
 stat[,13:15]
 ```
 
-The column 'OneTail' indicates whether a result *could have been* a one-tailed
+The column `OneTail` indicates whether a result *could have been* a one-tailed
 test. This means that the result would have been correct if it is a one-tailed
 test.
 
-The column 'OneTailedInTxt' indicates whether the string "one-tailed",
+The column `OneTailedInTxt` indicates whether the string "one-tailed",
 "one-sided", or "directional" was found in the full text that statcheck scanned.
-If 'OneTailedInTxt==TRUE', it could be a good indication that some or all of the
+If `OneTailedInTxt==TRUE`, it could be a good indication that some or all of the
 tests are one-tailed, which means that some of the flagged inconsistencies might
 not be inconsistent at all.
 
-Finally, the column 'APAfactor' indicates the proportion of all detected
+Finally, the column `APAfactor` indicates the proportion of all detected
 p-values that were part of a fully APA reported NHST result. It gives a rought
 indication of how many statistical tests statcheck may have missed because of
 reporting issues.
@@ -355,7 +355,7 @@ msg_results <- statcheck(msg_example)
 ```
 
 In the first message, "Check the significance level", statcheck warns you that
-even though it assumed an $\alpha$ of .05, there might be 'DecisionErrors' in
+even though it assumed an $\alpha$ of .05, there might be `DecisionErrors` in
 the text you scanned if $\alpha = .1$ or $\alpha = .01$. It is advised to check
 the full text of the article to look up the significance level.
 
@@ -379,10 +379,10 @@ statcheck(txt)
 
 One of the main advantages of statcheck is that it can automatically extract
 statistical results from articles, so that you don't have to enter them
-manually. Instead of the 'statcheck' function, you use the 'checkPDF' function,
+manually. Instead of the `statcheck` function, you use the `checkPDF` function,
 which automatically calls statcheck.
 
-There are three ways to select an article using 'checkPDF'.
+There are three ways to select an article using `checkPDF`.
 
 The first way is to specify the entire path of the article you want to scan:
 
@@ -391,7 +391,7 @@ checkPDF("C:/Dropbox/Science/Papers/my_article.pdf")
 ```
 
 The second way is to specify the location of the article in your working
-directory and then run 'checkPDF':
+directory and then run `checkPDF`:
 
 ```{r checkPDF_wd, echo = TRUE, eval = FALSE}
 setwd("C:/Dropbox/Science/Papers/")
@@ -416,8 +416,8 @@ articles when possible.
 
 ### Using statcheck on an HTML article
 
-You can use statcheck on an HTML article by using the function 'checkHTML'. This
-function works in the same way as 'checkPDF' (see the section above).
+You can use statcheck on an HTML article by using the function `checkHTML`. This
+function works in the same way as `checkPDF` (see the section above).
 
 If you have access to both the PDF and the HTML version of an article, I would
 advise to check the HTML article to avoid type setting issues.
@@ -425,12 +425,12 @@ advise to check the HTML article to avoid type setting issues.
 ### Using statcheck on a folder of articles
 
 It is also possible to automatically let statcheck check an entire folder of
-articles with the functions 'checkPDFdir' (scans all the PDF articles in the
-specified folder), 'checkHTMLdir' (scans all the HTML files in the specified
-folder), or simply 'checkdir' (scans both PDF and HTML files in a folder).
+articles with the functions `checkPDFdir` (scans all the PDF articles in the
+specified folder), `checkHTMLdir` (scans all the HTML files in the specified
+folder), or simply `checkdir` (scans both PDF and HTML files in a folder).
 
 Specifying the folder/directory works similarly as specifying a file in the
-'checkPDF' or 'checkHTML' function (see sections above):
+`checkPDF` or `checkHTML` function (see sections above):
 
 ```{r checkdir, eval = FALSE, echo = TRUE}
 checkdir("C:/Dropbox/Science/Papers/")
@@ -440,7 +440,7 @@ checkdir()
 
 All three functions to check an entire directory have an argument with which you
 can specify if you also want to check all subdirectories within the directory
-you specified: 'subdir=TRUE'. By default, these functions will check everything
+you specified: `subdir=TRUE`. By default, these functions will check everything
 in a directory, also the subdirectories. If you don't want to check
 subdirectories, you can set this argument to false.
 
@@ -451,7 +451,7 @@ checkdir("C:/Dropbox/Science/Papers/")
 checkdir("C:/Dropbox/Science/Papers/",subdir = FALSE)
 ```
 
-Lastly, there is an extra argument in 'checkHTMLdir', namely 'extension=TRUE'.
+Lastly, there is an extra argument in `checkHTMLdir`, namely `extension=TRUE`.
 This argument controls whether statcheck will search the specified directories
 for files with the extension ".htm" or ".html", or if it will just check
 everything. This argument is mainly useful when you hide file extensions in your
@@ -469,7 +469,7 @@ call_example <- capture.output(str(args(statcheck), width = 60))
 cat(paste(sub("function ", "statcheck", call_example), collapse = "\n"))
 ```
 
-All these arguments can also be specified in the functions to check entire articles or folders of articles. E.g., when using 'checkPDF', you can also specify specific arguments as follows:
+All these arguments can also be specified in the functions to check entire articles or folders of articles. E.g., when using `checkPDF`, you can also specify specific arguments as follows:
 
 ```{r arguments_checkPDF, echo = TRUE, eval = FALSE}
 checkPDF("my_article.pdf", OneTailedTxt=TRUE, alpha=.01)
@@ -478,7 +478,10 @@ checkPDF("my_article.pdf", OneTailedTxt=TRUE, alpha=.01)
 I will go over all arguments below.
 
 #### x
-The argument 'x' defines the main input variable: a string of text from which you'd like to extract and check the statistics. This is the only argument without a default value.
+
+The argument `x` defines the main input variable: a string of text from which
+you'd like to extract and check the statistics. This is the only argument
+without a default value.
 
 ```{r x, echo = TRUE, eval = FALSE}
 txt <- "blablabla the effect was very significant (t(100)=1, p < 0.001)"
@@ -486,11 +489,13 @@ statcheck(txt)
 ```
 
 Or directly:
+
 ```{r x_directly, echo = TRUE, eval = FALSE}
 statcheck("blablabla the effect was very significant (t(100)=1, p < 0.001)")
 ```
 
 It is also possible to evaluate a vector of strings:
+
 ```{r x_vector, echo = TRUE, eval = TRUE, message = FALSE}
 txt1 <- "t(100) = 1, p < 0.001"
 txt2 <- "F(2,45) = 2.81, p = .45"
@@ -498,7 +503,11 @@ statcheck(c(txt1,txt2))
 ```
 
 #### stat
-The argument 'stat' defines which type of statistics will be extracted. By default statcheck extracts all the statistics it can read: t, F,  correlations, $\chi^2$, and Z. With 'stat' you can tell statcheck to only extract a selection of those statistics or even just one type, e.g.:
+
+The argument `stat` defines which type of statistics will be extracted. By
+default statcheck extracts all the statistics it can read: t, F,  correlations,
+$\chi^2$, and Z. With `stat` you can tell statcheck to only extract a selection
+of those statistics or even just one type, e.g.:
 
 ```{r stat_t, echo = TRUE, eval = TRUE, message = FALSE}
 txt <- "blablabla result 1 is t(100) = 1, p < 0.001, and result 2 is F(2,45) = 2.81, p = .45"
@@ -506,6 +515,7 @@ statcheck(txt, stat="t")
 ```
 
 Or when you're specifically looking for only t statistics and correlations:
+
 ```{r stat_tr, echo = TRUE, eval = TRUE, message = FALSE}
 txt <- "blablabla result 1 is t(100) = 1, p < 0.001, and result 2 is F(2,45) = 2.81, p = .45"
 statcheck(txt, stat=c("t", "cor"))
@@ -514,21 +524,33 @@ statcheck(txt, stat=c("t", "cor"))
 By default, statcheck extracts all statistics it can read.
 
 #### OneTailedTests
-The argument 'OneTailedTests' defines whether we treat all extracted tests as two-tailed ('OneTailedTests=FALSE'; default) or as one-tailed ('OneTailedTests=TRUE'):
+
+The argument `OneTailedTests` defines whether we treat all extracted tests as
+two-tailed (`OneTailedTests=FALSE`; default) or as one-tailed
+(`OneTailedTests=TRUE`):
 
 ```{r OneTailedTests, echo = TRUE, eval = TRUE, message = FALSE}
 txt <- "F(2,45) = 2.81, p = .45"
 statcheck(txt, OneTailedTests=TRUE)
 ```
 
-In the chunk above, the extracted test will be treated as a one-tailed test. Note that the computed p-value in the output now is divided by two.
+In the chunk above, the extracted test will be treated as a one-tailed test.
+Note that the computed p-value in the output now is divided by two.
 
-This argument is not very "smart". It will consider ALL extracted tests as one-tailed, even when that is impossible (e.g., when the df1 of an F test is > 2).
+This argument is not very "smart". It will consider ALL extracted tests as
+one-tailed, even when that is impossible (e.g., when the df1 of an F test is >
+2).
 
 #### alpha
-The argument 'alpha' defines which level of significance statcheck will assume. This argument defaults to $\alpha$ = .05, the widely used criterium in psychology.
 
-If a result isn't a DecisionError with $\alpha$ = .05, but it would be when $\alpha$ = .01 or $\alpha$ = .10, statcheck will print a message advising you to look up the actual level of significance that is used in the article. If it turns out that an $\alpha$ of .01 is used, you can adapt that in statcheck:
+The argument `alpha` defines which level of significance statcheck will assume.
+This argument defaults to $\alpha$ = .05, the widely used criterium in
+psychology.
+
+If a result isn't a DecisionError with $\alpha$ = .05, but it would be when
+$\alpha$ = .01 or $\alpha$ = .10, statcheck will print a message advising you to
+look up the actual level of significance that is used in the article. If it
+turns out that an $\alpha$ of .01 is used, you can adapt that in statcheck:
 
 ```{r alpha, echo = TRUE, eval = TRUE, message = FALSE}
 txt <- "F(2,45) = 5.81, p = .03"
@@ -540,12 +562,20 @@ statcheck(txt)
 statcheck(txt, alpha=.01)
 ```
 
-Note that when $\alpha$=.01 this result is counted as a 'DecisionError'.
+Note that when $\alpha$=.01 this result is counted as a `DecisionError`.
 
 #### pEqualAlphaSig
-The argument 'pEqualAlphaSig' defines whether a p-value equal to $\alpha$ is treated as significant ('pEqualAlphaSig=TRUE'; default) or not ('pEqualAlphaSig=FALSE'). 
 
-By convention, a result is deemed significant when p < $\alpha$, which would correspond with the setting 'pEqualAlphaSig=FALSE'. However, when we inspected all instances of published papers in which statcheck found "p = .05", we found that in almost 95% of the cases the authors had interpreted the result as significant (Nuijten et al., in press). Because of this finding, we decided to count p =< $\alpha$ as significant by default.
+The argument `pEqualAlphaSig` defines whether a p-value equal to $\alpha$ is
+treated as significant (`pEqualAlphaSig=TRUE`; default) or not
+(`pEqualAlphaSig = FALSE`).
+
+By convention, a result is deemed significant when p < $\alpha$, which would
+correspond with the setting `pEqualAlphaSig = FALSE`. However, when we inspected
+all instances of published papers in which statcheck found "p = .05", we found
+that in almost 95% of the cases the authors had interpreted the result as
+significant (Nuijten et al., in press). Because of this finding, we decided to
+count p =< $\alpha$ as significant by default.
 
 This example illustrates the difference between the two options:
 
@@ -559,23 +589,34 @@ statcheck(txt)
 statcheck(txt, pEqualAlphaSig=FALSE)
 ```
 
-Note that in the default setting this result was not counted as a 'DecisionError'. After all, the reported "p = .05" is counted as significant, and even though the computed p-value (p = .02) is not consistent with p = .05, it is still significant.
+Note that in the default setting this result was not counted as a
+`DecisionError`. After all, the reported "p = .05" is counted as significant,
+and even though the computed p-value (p = .02) is not consistent with p = .05,
+it is still significant.
 
-In the version where 'pEqualAlphaSig=FALSE', this result is counted as a 'DecisionError', because here the reported result is not significant (only p < .05 is counted as significant, not p = .05), whereas the computed result is.
+In the version where `pEqualAlphaSig = FALSE`, this result is counted as a
+`DecisionError`, because here the reported result is not significant (only p <
+.05 is counted as significant, not p = .05), whereas the computed result is.
 
 #### pZeroError
-The argument 'pZeroError' controls whether statcheck will count a p-value reported as "p=.000" as an error (default, 'pZeroError=TRUE') or not ('pZeroError=FALSE'). 
 
-We decided to count these cases as an error, because according to the APA reporting guidelines, a p-value smaller than .001 should be reported as "p<.001", and never as "p=.000". Furthermore, a p-value can never be exactly zero, so it makes no sense to report it as such.
+The argument `pZeroError` controls whether statcheck will count a p-value
+reported as "p=.000" as an error (default, `pZeroError=TRUE`) or not
+(`pZeroError=FALSE`).
 
-If you find these criteria too stringent, you can set 'pZeroError' to 'FALSE'.
+We decided to count these cases as an error, because according to the APA
+reporting guidelines, a p-value smaller than .001 should be reported as
+"p<.001", and never as "p=.000". Furthermore, a p-value can never be exactly
+zero, so it makes no sense to report it as such.
+
+If you find these criteria too stringent, you can set `pZeroError` to `FALSE`.
 
 #### OneTailedTxt
-The argument 'OneTailedTxt' controls whether statcheck will try to identify and correct for one-tailed tests. This is one of the most important arguments in statcheck. Our validity study showed that statcheck's accuracy improved when 'OneTailedTxt=TRUE' (Nuijten et al., in press).
+The argument `OneTailedTxt` controls whether statcheck will try to identify and correct for one-tailed tests. This is one of the most important arguments in statcheck. Our validity study showed that statcheck's accuracy improved when `OneTailedTxt=TRUE` (Nuijten et al., in press).
 
-By default, 'OneTailedTxt=FALSE' and statcheck will treat all tests it finds the same, depending on your settings for 'OneTailedTests'. However, you can tell statcheck to actively look for tests that might be one-tailed by setting 'OneTailedTxt=TRUE'.
+By default, `OneTailedTxt=FALSE` and statcheck will treat all tests it finds the same, depending on your settings for `OneTailedTests`. However, you can tell statcheck to actively look for tests that might be one-tailed by setting `OneTailedTxt=TRUE`.
 
-When 'OneTailedTxt=TRUE', statcheck will search the entire text for the keywords "one-tailed", "one-sided", and "directional" (taking spacing issues etc. into account). When statcheck finds at least one of those keywords AND an initially inconsistent result would be consistent if it was a one-tailed test, then statcheck treats this case as a one-tailed test and counts it as consistent.
+When `OneTailedTxt=TRUE`, statcheck will search the entire text for the keywords "one-tailed", "one-sided", and "directional" (taking spacing issues etc. into account). When statcheck finds at least one of those keywords AND an initially inconsistent result would be consistent if it was a one-tailed test, then statcheck treats this case as a one-tailed test and counts it as consistent.
 
 ```{r OneTailedTxt, echo = TRUE, eval = TRUE, message = FALSE}
 txt <- "... t(48) = 1.82, p < .05, all tests were one-tailed."
@@ -587,10 +628,10 @@ statcheck(txt)
 statcheck(txt, OneTailedTxt=TRUE)
 ```
 
-Note that in the first, default scenario the result is treated both as an 'Error' and a 'DecisionError'. However, if 'OneTailedTxt' is set to 'TRUE', statcheck recognizes this test a one-tailed test and doesn't flag it as an inconsistency. Note, however, that the computed p-value in the output still corresponds to a two-tailed test.
+Note that in the first, default scenario the result is treated both as an `Error` and a `DecisionError`. However, if `OneTailedTxt` is set to `TRUE`, statcheck recognizes this test a one-tailed test and doesn't flag it as an inconsistency. Note, however, that the computed p-value in the output still corresponds to a two-tailed test.
 
 #### AllPValues
-By default, statcheck searches for fully reported NHST results (test statistic, degrees of freedom if necessary, and a p-value). However, if you set the argument 'AllPValues' to 'TRUE', statcheck will only search for p-values:
+By default, statcheck searches for fully reported NHST results (test statistic, degrees of freedom if necessary, and a p-value). However, if you set the argument `AllPValues` to `TRUE`, statcheck will only search for p-values:
 
 ```{r AllPValues, eval = TRUE, echo = TRUE, message = FALSE}
 txt <- "We found a significant difference between groups, F(3, 147) = 3.45, p = .02. Group 1 had a higher mean than group 2, t(48) = 1.56, p<.05, but did not differ from group 3, t(48) = .34, p = .74. We found no difference between men and women, t(148) = .73, p = .763."
@@ -620,19 +661,19 @@ By default, the plot is created with ggplot2 in APA style. Many thanks to [John 
 plot(stat, APA=FALSE)
 ```
 
-When 'APA=false', it is possible to modify the plot's graphical parameters:
+When `APA=FALSE`, it is possible to modify the plot's graphical parameters:
 
 ```{r plot_nonapa_par, eval = TRUE, echo = TRUE, message = FALSE}
 plot(stat, APA=FALSE, cex=2, axes=FALSE)
 ```
 
-The non-APA layout is also the layout that statcheck uses in the 'identify' function that is explained in the next section.
+The non-APA layout is also the layout that statcheck uses in the `identify` function that is explained in the next section.
 
 ### Identify points in plot
 
-If you plotted many statcheck results and there is one point that stands out in the graph, but it's hard to find in the statcheck output, the 'identify' function might be useful.
+If you plotted many statcheck results and there is one point that stands out in the graph, but it's hard to find in the statcheck output, the `identify` function might be useful.
 
-'identify' allows you to click on points in the plot to literally identify them in the data frame with statcheck results. Note: this function is only available if you run statcheck in RStudio.
+`identify` allows you to click on points in the plot to literally identify them in the data frame with statcheck results. Note: this function is only available if you run statcheck in RStudio.
 
 For instance, if we go back to the example in the section above, we might be interested in the two p-values that were flagged as inconsistencies.
 
@@ -657,7 +698,7 @@ As you can see in the data frame and the plot, the 2nd and 4th row from the outp
 
 ### Summarize statcheck results
 
-The function 'summary' uses the full statcheck data frame to calculate summarized results.
+The function `summary` uses the full statcheck data frame to calculate summarized results.
 
 ```{r summary, eval = TRUE, echo = TRUE, message = FALSE}
 txt1 <- "We ran a manipulation check which showed that the stimulus achieved the desired effect, Z = 1.99, p < .05"
@@ -667,7 +708,7 @@ stat <- statcheck(c(txt1,txt2))
 
 summary(stat)
 ```
-The output shows that there were two sources with statistics scanned. The summary indicates how many results were extracted per source ('pValues'), how many of those were an 'Error' or 'DecisionError'.
+The output shows that there were two sources with statistics scanned. The summary indicates how many results were extracted per source (`pValues`), how many of those were an `Error` or `DecisionError`.
 
 ## Common Errors
 
